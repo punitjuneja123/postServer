@@ -2,10 +2,23 @@ const express = require("express");
 const { postModel } = require("../models/post.model");
 let postRoute = express.Router();
 
-postRoute.get("/posts", async (req, res) => {
+postRoute.get("/posts?:device", async (req, res) => {
   let req_userID = req.body.userID;
-  let data = await postModel.find({ userID: req_userID });
-  res.send(data);
+  let device1 = req.query.divice1;
+  let device2 = req.query.device2;
+  console.log(req.query);
+  console.log(device1, device2);
+  if (device2 == undefined) {
+    let data = await postModel.find({ userID: req_userID, device: device1 });
+    res.send(data);
+  } else {
+    let data = await postModel.find({
+      $and: [{ userID: req_userID, device: device1, device: device2 }],
+    });
+    res.send(data);
+  }
+
+  //   let data = await postModel.find({ userID: req_userID });
 });
 
 postRoute.post("/posts/create", async (req, res) => {
