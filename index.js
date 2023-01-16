@@ -1,4 +1,5 @@
 const express = require("express");
+const cors=require("cors")
 require("dotenv").config()
 const app = express();
 const { connection } = require("./config/db");
@@ -7,6 +8,7 @@ const { postRoute } = require("./routes/post.route");
 const { authentication } = require("./middleware/auth.middleware");
 
 app.use(express.json());
+app.use(cors());
 app.use(userRoute);
 app.use(authentication);
 app.use(postRoute);
